@@ -1,5 +1,6 @@
-var output=0;
+var output="0";
 var exp="";
+var firstInputFlag=true;
 
 window.onload=function(){
 	
@@ -77,9 +78,107 @@ function mExit(){
 
 function mClick(){
 	var x=document.getElementById(this.id).innerHTML;
-	exp+=x;
-	document.getElementById("display").innerHTML=exp;
+	if(x!=='='&&x!=='+'&&x!=='-'&&x!=='x'&&x!=='/'&&x!=='CE'&&x!=='C')
+		{
+			if(exp==="0"&&x!==".")
+				{
+					exp=x;
+					output=x;
+				}
+			else if(output==="0"&&x!==".")
+				{
+					exp+=x;
+					output=x;
+				}
+			else
+				{
+					exp+=x;
+					output+=x;
+				}
+			document.getElementById("display").innerHTML=output;
+		}
+	else if(x==="C")
+	{
+		clear();
+	}
+	else if(x==="CE")
+		{
+			clearAll();
+			firstInputFlag=true;
+		}
+	else
+		{
+			evaluateExpression();
+			document.getElementById("display").innerHTML=exp;
+			if(x!=='=')
+				exp+=x;
+			firstInputFlag=true;
+			output="0";
+		}
 	
 }
 
+function evaluateExpression(){
+	if(exp.indexOf('+')>0)
+		{
+			var operands=exp.split("+");
+				if(operands.length>1)
+					{
+						var a=(parseFloat(operands[0])+parseFloat(operands[1]));
+						exp=""+a;
+					}
+			
+		}
+	if(exp.indexOf('/')>0)
+	{
+		var operands=exp.split("/");
+			if(operands.length>1)
+				{
+					if(parseFloat(operands[1])!==0)
+						{
+							var a=(parseFloat(operands[0])/parseFloat(operands[1]));
+							exp=""+a;
+						}
+					else
+						{
+							clearAll();
+							exp="ERROR!! Divide by Zero. Press CE.";
+						}
+				}
+		
+	}
+	if(exp.indexOf('-')>0)
+	{
+		var operands=exp.split("-");
+			if(operands.length>1)
+				{
+					var a=(parseFloat(operands[0])-parseFloat(operands[1]));
+					exp=""+a;
+				}
+		
+	}
+	if(exp.indexOf('x')>0)
+	{
+		var operands=exp.split("x");
+			if(operands.length>1)
+				{
+					var a=(parseFloat(operands[0])*parseFloat(operands[1]));//123;
+					exp=""+a;
+				}
+		
+	}
+}
 
+function clear(){
+	output=output.length;
+	exp=exp.substring(0,exp.length-output);
+	output="0";
+	document.getElementById("display").innerHTML=output;
+}
+
+function clearAll(){
+	output="0";
+	exp="";
+	firstInputFlag=true;
+	document.getElementById("display").innerHTML=output;
+	}
