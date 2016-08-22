@@ -80,6 +80,12 @@ function mClick(){
 	var x=document.getElementById(this.id).innerHTML;
 	if(x!=='='&&x!=='+'&&x!=='-'&&x!=='x'&&x!=='/'&&x!=='CE'&&x!=='C')
 		{
+			if(firstInputFlag)
+				{
+					exp="0";
+					output="0";
+					firstInputFlag=false;
+				}
 			if(exp==="0"&&x!==".")
 				{
 					exp=x;
@@ -112,7 +118,8 @@ function mClick(){
 			document.getElementById("display").innerHTML=exp;
 			if(x!=='=')
 				exp+=x;
-			firstInputFlag=true;
+			else
+				firstInputFlag=true;
 			output="0";
 		}
 	
